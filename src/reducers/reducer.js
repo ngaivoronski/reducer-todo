@@ -4,7 +4,8 @@ export const initialState = {
     toDoList: [{
         item: 'Learn about reducers',
         completed: false,
-        id: new Date().valueOf()
+        id: new Date().valueOf(),
+        tags: [],
         }]
 };
 
@@ -26,6 +27,8 @@ export const appReducer = (state, action) => {
                         }) };
         case "CLEAR_COMPLETE":
             return {...state, toDoList : state.toDoList.filter(item => item.completed === false)}
+        case "ADD_TAG":
+            return {state, }
         default:
             throw new Error("No action matched!");
     }

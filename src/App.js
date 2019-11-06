@@ -1,7 +1,7 @@
 import React, { useReducer, useState } from "react";
 import {initialState, appReducer} from './reducers/reducer';
 import ToDoContext from './contexts/ToDoContext';
-import './App.css';
+import './App.scss';
 import ToDoList from "./components/ToDoList";
 import ToDoForm from "./components/ToDoForm";
 
@@ -10,19 +10,26 @@ const App = () => {
   const [ToDoItem, setToDoItem] = useState({
     item: '',
     completed: false,
-    id: new Date().valueOf()
+    id: new Date().valueOf(),
+    tags: [],
     });
+  const [tagItem, setTagItem] = useState("");
 
   const handleToDoItemChange = event => {
     setToDoItem({...ToDoItem, item: event.target.value, id: new Date().valueOf()});
   };
+
+  const handleTagChange = event => {
+    setTagItem(event.target.value)
+  }
 
   const saveToDoItem = () => {
     dispatch({ type: "ADD_TODO", payload: ToDoItem });
     setToDoItem({
       item: '',
       completed: false,
-      id: new Date().valueOf()
+      id: new Date().valueOf(),
+      tags: [],
       })
   };
 
@@ -34,9 +41,15 @@ const App = () => {
     dispatch({ type: "CLEAR_COMPLETE"});
   }
 
+  const addTag = () => {
+    setToDoItem({...ToDoItem, tags: [...ToDoItem.tags, tagItem]})
+    console.log(ToDoItem);
+    setTagItem('');
+  }
+
   return (
     <div className="App">
-      <ToDoContext.Provider value={{ state, dispatch, ToDoItem, setToDoItem, state, appReducer, toggleComplete, handleToDoItemChange, saveToDoItem, clearComplete }}>
+      <ToDoContext.Provider value={{ state, dispatch, ToDoItem, setToDoItem, state, appReducer, toggleComplete, handleToDoItemChange, saveToDoItem, clearComplete, tagItem, handleTagChange, addTag }}>
       <h1>ToDo List</h1>
 
       <ToDoForm />
