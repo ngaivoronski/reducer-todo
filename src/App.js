@@ -1,6 +1,9 @@
 import React, { useReducer, useState } from "react";
 import {initialState, appReducer} from './reducers/reducer';
+import ToDoContext from './contexts/ToDoContext';
 import './App.css';
+import ToDoList from "./components/ToDoList";
+import ToDoForm from "./components/ToDoForm";
 
 const App = () => {
   const [state, dispatch] = useReducer(appReducer, initialState);
@@ -33,32 +36,14 @@ const App = () => {
 
   return (
     <div className="App">
+      <ToDoContext.Provider value={{ state, dispatch, ToDoItem, setToDoItem, state, appReducer, toggleComplete, handleToDoItemChange, saveToDoItem, clearComplete }}>
       <h1>ToDo List</h1>
 
-      <div>
-          <input
-            type="text"
-            ToDoItem="ToDoItem"
-            onChange={handleToDoItemChange}
-            value={ToDoItem.item}
-          />
-          <button onClick={saveToDoItem}>New To Do</button>
-          <button onClick={clearComplete}>Clear Complete</button>
-      </div>
-      
-      {state.toDoList.map((todo, index) => {
-        return (
-          <div
-            onClick={() => toggleComplete(todo.id)}
-          >
-          <p>Task: {todo.item}</p>
-          <p>ID: {todo.id}</p>
-          <p>Completed: {todo.completed ? "Completed" : "Open"}</p>
-          </div>
-        );
-      })}
+      <ToDoForm />
 
-      
+      <ToDoList />
+
+    </ToDoContext.Provider>
     </div>
   );
 };
